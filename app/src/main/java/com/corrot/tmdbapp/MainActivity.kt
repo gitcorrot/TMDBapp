@@ -1,6 +1,7 @@
 package com.corrot.tmdbapp
 
 import android.os.Bundle
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -15,12 +16,15 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var popularMoviesRecyclerView: RecyclerView
     private lateinit var layoutManager: GridLayoutManager
+    private lateinit var popularMoviesPageTextView: TextView
+    private var popularMoviesPage = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         popularMoviesRecyclerView = rv_popular
+        popularMoviesPageTextView = tv_page
         layoutManager = GridLayoutManager(this, 2)
 
         val adapter = PopularMoviesAdapter(ArrayList())
@@ -32,6 +36,10 @@ class MainActivity : AppCompatActivity() {
 
         mViewModel.popularMoviesLiveData.observe(this, Observer {
             adapter.setMovies(it)
+        })
+
+        mViewModel.popularMoviesPageLiveData.observe(this, Observer {
+            popularMoviesPageTextView.text = "Page: $it"
         })
 
         mViewModel.fetchMovies()

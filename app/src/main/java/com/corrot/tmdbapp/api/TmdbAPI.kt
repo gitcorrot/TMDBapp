@@ -11,5 +11,7 @@ interface TmdbAPI {
 }
 
 data class TmdbMovieResponse(
+    val page: Int,
+    val total_pages: Int,
     val results: List<TmdbMovie>
 )
