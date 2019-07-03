@@ -1,39 +1,39 @@
 package com.corrot.tmdbapp
 
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.corrot.tmdb_app.R
 import com.corrot.tmdbapp.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var t: TextView
-    lateinit var b: Button
+    private lateinit var popularMoviesRecyclerView: RecyclerView
+    private lateinit var layoutManager: GridLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        t = textView
-        b = button
+        popularMoviesRecyclerView = rv_popular
+        layoutManager = GridLayoutManager(this, 2)
+
+        val adapter = PopularMoviesAdapter(ArrayList())
+        popularMoviesRecyclerView.layoutManager = layoutManager
+        popularMoviesRecyclerView.adapter = adapter
 
         val mViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
             .create(MainViewModel::class.java)
 
         mViewModel.popularMoviesLiveData.observe(this, Observer {
-            for (o in it) {
-                t.text = "\n" + o.title + t.text + "\n"
-            }
+            adapter.setMovies(it)
         })
 
-        b.setOnClickListener {
-            t.text = "_"
-            mViewModel.fetchMovies()
-        }
+        mViewModel.fetchMovies()
     }
 }
