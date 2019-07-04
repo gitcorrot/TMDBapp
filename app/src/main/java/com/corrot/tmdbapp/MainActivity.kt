@@ -46,7 +46,8 @@ class MainActivity : AppCompatActivity() {
         })
 
         mViewModel.popularMoviesPageLiveData.observe(this, Observer {
-            popularMoviesPageTextView.text = "Page: $it"
+            popularMoviesPageTextView.text = "Page: " + it.currentPage + " / " + it.totalPages
+
         })
 
         swipeRefreshLayout.setOnRefreshListener {

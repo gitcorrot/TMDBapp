@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import com.corrot.tmdb_app.R
 import kotlinx.android.synthetic.main.movie_item.view.*
 
-class PopularMoviesAdapter(private var movies: List<TmdbMovie>) :
+class PopularMoviesAdapter(private var movies: List<Movie>) :
     RecyclerView.Adapter<PopularMoviesAdapter.MovieHolder>() {
 
     class MovieHolder(v: View) : RecyclerView.ViewHolder(v) {
@@ -37,14 +37,14 @@ class PopularMoviesAdapter(private var movies: List<TmdbMovie>) :
     override fun getItemCount(): Int = movies.size
 
     // todo use coroutines?
-    fun setMovies(newMovies: List<TmdbMovie>) {
+    fun setMovies(newMovies: List<Movie>) {
         val diff = notifyChanges(newMovies, movies)
         movies = newMovies
         diff.dispatchUpdatesTo(this)
     }
 
     private fun notifyChanges(
-        newMovies: List<TmdbMovie>, oldMovies: List<TmdbMovie>
+        newMovies: List<Movie>, oldMovies: List<Movie>
     ): DiffUtil.DiffResult {
         return DiffUtil.calculateDiff(object : DiffUtil.Callback() {
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =

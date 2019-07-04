@@ -1,6 +1,6 @@
 package com.corrot.tmdbapp
 
-data class TmdbMovie(
+data class Movie(
     val id: Int,
     val title: String,
     val release_date: String,
