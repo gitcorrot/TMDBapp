@@ -14,7 +14,7 @@ interface TmdbAPI {
     @GET("movie/{movie_id}")
     fun getMovieDetails(@Path("movie_id") id: Int): Deferred<Response<Movie>>
 
-    @GET("/search/movie")
+    @GET("search/movie")
     fun searchMovie(@Query("query") name: String): Deferred<Response<MovieResponse>>
 }
 
