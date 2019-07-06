@@ -7,22 +7,23 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.corrot.tmdb_app.R
 import com.corrot.tmdbapp.api.LoadState
-import com.corrot.tmdbapp.viewmodel.PopularMoviesViewModel
+import com.corrot.tmdbapp.viewmodel.MoviesViewModel
+import com.corrot.tmdbapp.viewmodel.MoviesViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var moviesSearchBar: AutoCompleteTextView
-    private lateinit var popularMoviesRecyclerView: RecyclerView
-    private lateinit var popularMoviesPageTextView: TextView
-    private lateinit var popularMoviesProgressBar: ProgressBar
+    private lateinit var moviesRecyclerView: RecyclerView
+    private lateinit var moviesPageTextView: TextView
+    private lateinit var moviesProgressBar: ProgressBar
     private lateinit var layoutManager: GridLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,17 +32,21 @@ class MainActivity : AppCompatActivity() {
 
         swipeRefreshLayout = srl_main
         moviesSearchBar = actv_main
-        popularMoviesRecyclerView = rv_popular
-        popularMoviesPageTextView = tv_page
-        popularMoviesProgressBar = pb_main
+        moviesRecyclerView = rv_movies
+        moviesPageTextView = tv_page
+        moviesProgressBar = pb_main
         layoutManager = GridLayoutManager(this, 2)
 
-        val mViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-            .create(PopularMoviesViewModel::class.java)
+        val mViewModel by lazy {
+            ViewModelProviders.of(
+                this,
+                MoviesViewModelFactory(MoviesDataFactory.MoviesDataType.POPULAR)
+            ).get(MoviesViewModel::class.java)
+        }
 
-        popularMoviesRecyclerView.layoutManager = layoutManager
-        val adapter = PagedPopularMoviesAdapter()
-        popularMoviesRecyclerView.adapter = adapter
+        moviesRecyclerView.layoutManager = layoutManager
+        val adapter = PagedMoviesAdapter()
+        moviesRecyclerView.adapter = adapter
 
         mViewModel.popularMoviesLiveData.observe(this, Observer {
             adapter.submitList(it)
@@ -49,14 +54,14 @@ class MainActivity : AppCompatActivity() {
 
         mViewModel.loadingState.observe(this, Observer {
             when (it) {
-                LoadState.LOADED -> popularMoviesProgressBar.visibility = View.GONE
-                else -> popularMoviesProgressBar.visibility = View.VISIBLE
+                LoadState.LOADED -> moviesProgressBar.visibility = View.GONE
+                else -> moviesProgressBar.visibility = View.VISIBLE
             }
         })
 
-//        val adapter = PopularMoviesAdapter(ArrayList())
-//        popularMoviesRecyclerView.layoutManager = layoutManager
-//        popularMoviesRecyclerView.adapter = adapter
+//        val adapter = MoviesAdapter(ArrayList())
+//        moviesRecyclerView.layoutManager = layoutManager
+//        moviesRecyclerView.adapter = adapter
 //
 //        val mViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
 //            .create(MainViewModel::class.java)
@@ -64,14 +69,14 @@ class MainActivity : AppCompatActivity() {
 //        mViewModel.popularMoviesLiveData.observe(this, Observer {
 //            it?.let {
 //                adapter.setMovies(it)
-//                popularMoviesProgressBar.visibility = View.GONE
+//                moviesProgressBar.visibility = View.GONE
 //                swipeRefreshLayout.isRefreshing = false
 //            }
 //        })
 //
 //        mViewModel.popularMoviesPageLiveData.observe(this, Observer {
 //            it?.let {
-//                popularMoviesPageTextView.text = "Page: ${it.currentPage}  /  ${it.totalPages}"
+//                moviesPageTextView.text = "Page: ${it.currentPage}  /  ${it.totalPages}"
 //            }
 //        })
 //
@@ -102,6 +107,7 @@ class MainActivity : AppCompatActivity() {
 //
 //        // init
 //        mViewModel.fetchMovies()
-//        popularMoviesProgressBar.visibility = View.VISIBLE
+//        moviesProgressBar.visibility = View.VISIBLE
     }
 }
+

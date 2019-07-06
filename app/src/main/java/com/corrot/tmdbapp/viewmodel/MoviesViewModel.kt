@@ -9,13 +9,15 @@ import com.corrot.tmdbapp.Movie
 import com.corrot.tmdbapp.MoviesDataFactory
 import com.corrot.tmdbapp.api.LoadState
 
-class PopularMoviesViewModel : ViewModel() {
+class MoviesViewModel(
+    private val type: MoviesDataFactory.MoviesDataType
+) : ViewModel() {
 
     var loadingState: LiveData<LoadState>
     var popularMoviesLiveData: LiveData<PagedList<Movie>>
 
     init {
-        val movesDataFactory = MoviesDataFactory()
+        val movesDataFactory = MoviesDataFactory(type)
 
         loadingState = Transformations.switchMap(movesDataFactory.mutableDataSource) {
             it.loadingState

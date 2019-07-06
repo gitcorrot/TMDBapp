@@ -8,8 +8,8 @@ import com.bumptech.glide.Glide
 import com.corrot.tmdb_app.R
 import kotlinx.android.synthetic.main.movie_item.view.*
 
-class PagedPopularMoviesAdapter :
-    PagedListAdapter<Movie, PagedPopularMoviesAdapter.MovieHolder>(MovieDiffUtil()) {
+class PagedMoviesAdapter :
+    PagedListAdapter<Movie, PagedMoviesAdapter.MovieHolder>(MovieDiffUtil()) {
 
     class MovieHolder(v: View) : RecyclerView.ViewHolder(v) {
         private val view: View = v

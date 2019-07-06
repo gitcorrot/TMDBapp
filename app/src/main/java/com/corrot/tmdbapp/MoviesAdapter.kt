@@ -8,8 +8,8 @@ import com.bumptech.glide.Glide
 import com.corrot.tmdb_app.R
 import kotlinx.android.synthetic.main.movie_item.view.*
 
-class PopularMoviesAdapter(private var movies: List<Movie>) :
-    RecyclerView.Adapter<PopularMoviesAdapter.MovieHolder>() {
+class MoviesAdapter(private var movies: List<Movie>) :
+    RecyclerView.Adapter<MoviesAdapter.MovieHolder>() {
 
     class MovieHolder(v: View) : RecyclerView.ViewHolder(v) {
         val view: View = v
