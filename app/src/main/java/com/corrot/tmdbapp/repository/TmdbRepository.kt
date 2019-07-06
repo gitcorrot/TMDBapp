@@ -8,7 +8,7 @@ import java.io.IOException
 class TmdbRepository(private val api: TmdbAPI) {
 
     suspend fun getPopularMovies(): Result<MovieResponse> {
-        val postRequest = api.getPopularMovies()
+        val postRequest = api.getPopularMovies(1)
         val response = postRequest.await()
 
         return if (response.isSuccessful) Result.Success(response.body()!!)

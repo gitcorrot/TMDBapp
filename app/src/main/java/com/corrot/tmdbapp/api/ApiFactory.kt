@@ -29,13 +29,12 @@ object ApiFactory {
         .addInterceptor(authInterceptor)
         .build()
 
-    fun retrofit(): Retrofit = Retrofit.Builder()
+    private fun retrofit(): Retrofit = Retrofit.Builder()
         .client(tmdbClient)
         .baseUrl("https://api.themoviedb.org/3/")
         .addConverterFactory(MoshiConverterFactory.create())
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .build()
 
-    val tmdbApi: TmdbAPI = retrofit()
-        .create(TmdbAPI::class.java)
+    val tmdbApi: TmdbAPI = retrofit().create(TmdbAPI::class.java)
 }

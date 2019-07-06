@@ -1,5 +1,6 @@
 package com.corrot.tmdbapp.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -42,7 +43,7 @@ class MainViewModel : ViewModel() {
                     popularMoviesPageLiveData.notifyObserver()
                 }
                 is Result.Error ->
-                    throw result.exception
+                    Log.e(javaClass.name, result.exception.message!!)
             }
         }
     }
@@ -55,7 +56,8 @@ class MainViewModel : ViewModel() {
                     userQueryOutput.notifyObserver()
                 }
                 is Result.Error ->
-                    throw result.exception
+                    Log.e(javaClass.name, result.exception.message!!)
+                //throw result.exception
             }
         }
     }

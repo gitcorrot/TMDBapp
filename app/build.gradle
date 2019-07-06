@@ -51,7 +51,6 @@ dependencies {
     def retrofit2_version = "2.5.0"
     def okhttp3_version = "3.12.0"
     def kotlinCoroutineVersion = "1.0.1"
-    def picassoVersion = "2.71828"
 
     // ViewModel and LiveData
     // implementation "androidx.lifecycle:lifecycle-extensions:2.2.0-alpha02"
@@ -77,4 +76,7 @@ dependencies {
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+
+    // Paging library
+    implementation 'android.arch.paging:runtime:1.0.1'
 }

@@ -9,13 +9,19 @@ import retrofit2.http.Query
 
 interface TmdbAPI {
     @GET("movie/popular")
-    fun getPopularMovies(): Deferred<Response<MovieResponse>>
+    fun getPopularMovies(
+        @Query("page") page: Int
+    ): Deferred<Response<MovieResponse>>
 
     @GET("movie/{movie_id}")
-    fun getMovieDetails(@Path("movie_id") id: Int): Deferred<Response<Movie>>
+    fun getMovieDetails(
+        @Path("movie_id") id: Int
+    ): Deferred<Response<Movie>>
 
     @GET("search/movie")
-    fun searchMovie(@Query("query") name: String): Deferred<Response<MovieResponse>>
+    fun searchMovie(
+        @Query("query") name: String
+    ): Deferred<Response<MovieResponse>>
 }
 
 data class MovieResponse(
