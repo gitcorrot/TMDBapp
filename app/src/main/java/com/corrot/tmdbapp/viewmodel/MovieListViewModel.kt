@@ -6,21 +6,26 @@ import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.corrot.tmdbapp.Movie
-import com.corrot.tmdbapp.MoviesDataFactory
 import com.corrot.tmdbapp.api.LoadState
+import com.corrot.tmdbapp.paging.MoviesDataFactory
 
-class MoviesViewModel(
-    private val type: MoviesDataFactory.MoviesDataType
+class MovieListViewModel(
+    type: MoviesDataFactory.MoviesDataType
 ) : ViewModel() {
 
-    var loadingState: LiveData<LoadState>
     var popularMoviesLiveData: LiveData<PagedList<Movie>>
+    var loadingState: LiveData<LoadState>
+    var totalPages: LiveData<Int>
 
     init {
         val movesDataFactory = MoviesDataFactory(type)
 
         loadingState = Transformations.switchMap(movesDataFactory.mutableDataSource) {
             it.loadingState
+        }
+
+        totalPages = Transformations.switchMap(movesDataFactory.mutableDataSource) {
+            it.totalPages
         }
 
         val pagedListConfig = PagedList.Config.Builder()

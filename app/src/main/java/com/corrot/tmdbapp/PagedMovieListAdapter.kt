@@ -6,10 +6,14 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.corrot.tmdb_app.R
+import com.corrot.tmdbapp.utils.AppConstants.Companion.POSTER_154_BASE_URL
+import com.corrot.tmdbapp.utils.inflate
 import kotlinx.android.synthetic.main.movie_item.view.*
 
-class PagedMoviesAdapter :
-    PagedListAdapter<Movie, PagedMoviesAdapter.MovieHolder>(MovieDiffUtil()) {
+class PagedMovieListAdapter :
+    PagedListAdapter<Movie, PagedMovieListAdapter.MovieHolder>(MovieDiffUtil()) {
+
+    var lastItemPosition = -1
 
     class MovieHolder(v: View) : RecyclerView.ViewHolder(v) {
         private val view: View = v
@@ -19,8 +23,7 @@ class PagedMoviesAdapter :
                 view.tv_movie_title.text = title
                 Glide
                     .with(view)
-                    .load("http://image.tmdb.org/t/p/w342/$poster_path")
-                    .placeholder(R.drawable.ic_block_black_24dp)
+                    .load("$POSTER_154_BASE_URL$poster_path")
                     .into(view.iv_movie)
             }
         }
@@ -32,6 +35,7 @@ class PagedMoviesAdapter :
     }
 
     override fun onBindViewHolder(holder: MovieHolder, position: Int) {
+        lastItemPosition = position
         getItem(position)?.let {
             holder.bind(it)
         }

@@ -1,8 +1,9 @@
-package com.corrot.tmdbapp
+package com.corrot.tmdbapp.paging
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
+import com.corrot.tmdbapp.Movie
 import com.corrot.tmdbapp.api.ApiFactory
 import com.corrot.tmdbapp.api.LoadState
 import com.corrot.tmdbapp.api.MovieResponse
@@ -17,6 +18,7 @@ class MoviesDataSource(
 
     private val api: TmdbAPI = ApiFactory.tmdbApi
     val loadingState = MutableLiveData<LoadState>()
+    val totalPages = MutableLiveData<Int>()
 
     override fun loadInitial(
         params: LoadInitialParams<Int>,
@@ -28,6 +30,7 @@ class MoviesDataSource(
                 when {
                     it.isSuccessful -> {
                         loadingState.postValue(LoadState.LOADED)
+                        totalPages.postValue(it.body()!!.total_pages)
                         callback.onResult(it.body()!!.results, null, 1)
                     }
                     else -> loadingState.postValue(LoadState.FAILED)
@@ -45,7 +48,7 @@ class MoviesDataSource(
                         val nextPage =
                             if (params.key < it.body()!!.total_pages) params.key + 1
                             else null
-                        println("LOADING PAGE: " + nextPage.toString())
+                        totalPages.postValue(it.body()!!.total_pages)
                         loadingState.postValue(LoadState.LOADED)
                         callback.onResult(it.body()!!.results, nextPage)
                     }
